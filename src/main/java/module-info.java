@@ -32,6 +32,8 @@
 module Spring.Boot.Extras.main {
     requires com.google.gson;
     requires extra.utilities;
+    requires java.management;
+    requires jdk.management;
     requires logging.utilities;
     requires org.slf4j;
     requires spring.boot;
