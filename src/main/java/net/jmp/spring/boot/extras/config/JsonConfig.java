@@ -32,6 +32,11 @@ import com.google.gson.Gson;
 
 import java.io.*;
 
+import static net.jmp.util.logging.LoggerUtils.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -46,22 +51,37 @@ import org.springframework.core.io.Resource;
 /// @since      0.1.0
 @Configuration
 public class JsonConfig {
+    /// The logger.
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
+    /// The environment.
+    private final Environment environment;
+
     /// The default constructor.
-    public JsonConfig() {
+    ///
+    /// @param  environment org.springframework.core.env.Environment
+    public JsonConfig(final Environment environment) {
         super();
+
+        this.environment = environment;
     }
 
     /// Return the configuration.
     ///
-    /// @param  environment org.springframework.core.env.Environment
-    /// @return             net.jmp.spring.boot.extras.config.Config
+    /// @return net.jmp.spring.boot.extras.config.Config
     @Bean
-    public Config config(final Environment environment) {
-        final String appConfigFileName = environment.getProperty("app.config.json.filename");
+    public Config config() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final String appConfigFileName = this.environment.getProperty("app.config.json.filename");
 
         if (appConfigFileName == null) {
             throw new RuntimeException("The app.config.json.filename property is not set");
         }
+
+        this.logger.info("Reading JSON config file: {}", appConfigFileName);
 
         final Resource resource = new ClassPathResource(appConfigFileName);
 
@@ -76,6 +96,13 @@ public class JsonConfig {
         } catch (final IOException ioe) {
             throw new RuntimeException("Failed to read JSON config file: " + appConfigFileName, ioe);
         }
+
+        this.logger.info("Loaded JSON config file: {}", appConfigFileName);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(config));
+        }
+
 
         return config;
     }

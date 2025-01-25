@@ -1,15 +1,7 @@
 {
   "version": 0.1,
+  "package": "net.jmp.spring.boot.extras.demos",
   "demos": [
-    "AppliedCollectionsDemo",
-    "Base64UtilsDemo",
-    "DataMeasurementFormatterDemo",
-    "DateUtilsDemo",
-    "DictionaryDemo",
-    "FileUtilsDemo",
-    "KeyedFunctionExecutorDemo",
-    "MD5CalculatorDemo",
-    "SHACalculatorDemo",
     "WrappedObjectDemo"
   ]
 }

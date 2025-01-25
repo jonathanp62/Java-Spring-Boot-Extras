@@ -28,11 +28,16 @@ package net.jmp.spring.boot.extras;
  * SOFTWARE.
  */
 
+import java.util.function.Consumer;
+
 import net.jmp.spring.boot.extras.config.Config;
 import net.jmp.spring.boot.extras.config.JsonConfig;
 
-import static net.jmp.util.logging.LoggerUtils.entry;
-import static net.jmp.util.logging.LoggerUtils.exit;
+import net.jmp.util.extra.demo.Demo;
+import net.jmp.util.extra.demo.DemoUtilException;
+import net.jmp.util.extra.demo.DemoUtils;
+
+import static net.jmp.util.logging.LoggerUtils.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +75,6 @@ public class Main implements Runnable {
         this.environment = environment;
     }
 
-    ///
     /// The run method.
     @Override
     public void run() {
@@ -84,7 +88,59 @@ public class Main implements Runnable {
                     this.environment.getProperty("spring.application.version"));
         }
 
-        final Config config = this.applicationContext.getBean(JsonConfig.class).config(this.environment);
+        this.runDemos(this.applicationContext.getBean(Config.class));
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Run the demonstration service classes.
+    ///
+    /// @param config net.jmp.spring.boot.extras.config.Config
+    private void runDemos(final Config config) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(config));
+        }
+
+        final Consumer<String> demoRunner = className -> {
+            try {
+                final double version = DemoUtils.getDemoClassVersion(className);
+
+                if (version > 0) {
+                    if (config.getVersion() >= version) {
+                        this.runDemo(className);
+                    }
+                } else {
+                    this.runDemo(className);
+                }
+            } catch (final ClassNotFoundException | DemoUtilException e) {
+                this.logger.error(catching(e));
+            }
+        };
+
+        config.getDemosAsStream()
+                .map(demo -> config.getPackageName() + "." + demo)
+                .forEach(demoRunner);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Run a single demonstration service class.
+    ///
+    /// @param  className   java.lang.String
+    /// @throws             java.lang.ClassNotFoundException    When the class is not found
+    private void runDemo(final String className) throws ClassNotFoundException {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(className);
+        }
+
+        final Class<?> clazz = Class.forName(className);
+        final Demo demo = (Demo) this.applicationContext.getBean(clazz);
+
+        demo.demo();
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
