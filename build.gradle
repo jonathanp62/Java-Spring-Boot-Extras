@@ -87,3 +87,44 @@ tasks.named('test') {
 		events "passed", "skipped", "failed"
 	}
 }
+
+tasks.register("bootRunDev") {
+	group = "application"
+	description = "Runs the Spring Boot application with the dev profile"
+
+	doFirst {
+		tasks.bootRun.configure {
+			systemProperty("spring.profiles.active", "dev")
+		}
+	}
+
+	finalizedBy("bootRun")
+}
+
+tasks.register("bootRunTest") {
+	group = "application"
+	description = "Runs the Spring Boot application with the test profile"
+
+	// The 'test' profile is reserved for unit testing
+
+	doFirst {
+		tasks.bootRun.configure {
+			systemProperty("spring.profiles.active", "testing")
+		}
+	}
+
+	finalizedBy("bootRun")
+}
+
+tasks.register("bootRunProd") {
+	group = "application"
+	description = "Runs the Spring Boot application with the prod profile"
+
+	doFirst {
+		tasks.bootRun.configure {
+			systemProperty("spring.profiles.active", "prod")
+		}
+	}
+
+	finalizedBy("bootRun")
+}

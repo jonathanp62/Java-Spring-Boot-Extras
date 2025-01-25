@@ -76,7 +76,7 @@ public class JsonConfig {
             throw new RuntimeException("The app.config.json.filename property is not set");
         }
 
-        this.logger.info("Reading JSON config file: {}", this.appConfigFileName);
+        this.logger.debug("Reading JSON config file: {}", this.appConfigFileName);
 
         final Resource resource = new ClassPathResource(this.appConfigFileName);
 
@@ -92,7 +92,7 @@ public class JsonConfig {
             throw new RuntimeException("Failed to read JSON config file: " + this.appConfigFileName, ioe);
         }
 
-        this.logger.info("Loaded JSON config file: {}", this.appConfigFileName);
+        this.logger.debug("Loaded JSON config file: {}", this.appConfigFileName);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exitWith(config));
