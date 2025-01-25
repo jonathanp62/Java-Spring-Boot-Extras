@@ -60,7 +60,7 @@ public class JsonConfig {
         final String appConfigFileName = environment.getProperty("app.config.json.filename");
 
         if (appConfigFileName == null) {
-            throw new RuntimeException("The app.config.json.filename property is not set.");
+            throw new RuntimeException("The app.config.json.filename property is not set");
         }
 
         final Resource resource = new ClassPathResource(appConfigFileName);
