@@ -1,5 +1,5 @@
 /*
- * (#)package-info.java 0.1.0   01/21/2025
+ * (#)package-info.java 0.1.0   01/25/2025
  *
  * MIT License
  *
@@ -24,8 +24,8 @@
  * SOFTWARE.
  */
 
-/// The main application package.
+/// The package for application configurations.
 ///
-/// @version    1.4.1
-/// @since      1.4.0
-package net.jmp.spring.boot.extras;
+/// @version    0.1.0
+/// @since      0.1.0
+package net.jmp.spring.boot.extras.config;

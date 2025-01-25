@@ -28,6 +28,9 @@ package net.jmp.spring.boot.extras;
  * SOFTWARE.
  */
 
+import net.jmp.spring.boot.extras.config.Config;
+import net.jmp.spring.boot.extras.config.JsonConfig;
+
 import static net.jmp.util.logging.LoggerUtils.entry;
 import static net.jmp.util.logging.LoggerUtils.exit;
 
@@ -80,6 +83,8 @@ public class Main implements Runnable {
                     this.environment.getProperty("spring.application.name"),
                     this.environment.getProperty("spring.application.version"));
         }
+
+        final Config config = this.applicationContext.getBean(JsonConfig.class).config(this.environment);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

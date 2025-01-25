@@ -1,0 +1,15 @@
+{
+  "version": 0.1,
+  "demos": [
+    "AppliedCollectionsDemo",
+    "Base64UtilsDemo",
+    "DataMeasurementFormatterDemo",
+    "DateUtilsDemo",
+    "DictionaryDemo",
+    "FileUtilsDemo",
+    "KeyedFunctionExecutorDemo",
+    "MD5CalculatorDemo",
+    "SHACalculatorDemo",
+    "WrappedObjectDemo"
+  ]
+}

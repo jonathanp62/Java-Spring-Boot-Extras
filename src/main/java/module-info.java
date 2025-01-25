@@ -1,5 +1,7 @@
 /*
- * (#)package-info.java 0.1.0   01/21/2025
+ * (#)module-info.java  0.1.0   01/25/2025
+ *
+ * @version  0.1.0
  *
  * MIT License
  *
@@ -24,8 +26,19 @@
  * SOFTWARE.
  */
 
-/// The main application package.
+/// The application module.
 ///
-/// @version    1.4.1
-/// @since      1.4.0
-package net.jmp.spring.boot.extras;
+/// @since  0.1.0
+module Spring.Boot.Extras.main {
+    requires com.google.gson;
+    requires extra.utilities;
+    requires logging.utilities;
+    requires org.slf4j;
+    requires spring.boot;
+    requires spring.boot.autoconfigure;
+    requires spring.context;
+    requires spring.core;
+
+    opens net.jmp.spring.boot.extras;
+    opens net.jmp.spring.boot.extras.config;
+}
