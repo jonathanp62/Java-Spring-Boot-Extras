@@ -36,6 +36,7 @@ module Spring.Boot.Extras.main {
     requires jdk.management;
     requires logging.utilities;
     requires org.slf4j;
+    requires spring.beans;
     requires spring.boot;
     requires spring.boot.autoconfigure;
     requires spring.context;

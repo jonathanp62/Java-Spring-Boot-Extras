@@ -31,7 +31,6 @@ package net.jmp.spring.boot.extras;
 import java.util.function.Consumer;
 
 import net.jmp.spring.boot.extras.config.Config;
-import net.jmp.spring.boot.extras.config.JsonConfig;
 
 import net.jmp.util.extra.demo.Demo;
 import net.jmp.util.extra.demo.DemoUtilException;
@@ -42,9 +41,9 @@ import static net.jmp.util.logging.LoggerUtils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Value;
 
-import org.springframework.core.env.Environment;
+import org.springframework.context.ApplicationContext;
 
 import org.springframework.stereotype.Component;
 
@@ -60,19 +59,21 @@ public class Main implements Runnable {
     /// The application context.
     private final ApplicationContext applicationContext;
 
-    /// The environment.
-    private final Environment environment;
+    /// The application name.
+    @Value("${spring.application.name}")
+    private String applicationName;
+
+    /// The application version.
+    @Value("${spring.application.version}")
+    private String applicationVersion;
 
     /// The constructor.
     ///
     /// @param  applicationContext  org.springframework.context.ApplicationContext
-    /// @param  environment         org.springframework.core.env.Environment
-    public Main(final ApplicationContext applicationContext,
-                final Environment environment) {
+    public Main(final ApplicationContext applicationContext) {
         super();
 
         this.applicationContext = applicationContext;
-        this.environment = environment;
     }
 
     /// The run method.
@@ -83,9 +84,7 @@ public class Main implements Runnable {
         }
 
         if (this.logger.isInfoEnabled()) {
-            this.logger.info("Hello from {}:{}",
-                    this.environment.getProperty("spring.application.name"),
-                    this.environment.getProperty("spring.application.version"));
+            this.logger.info("Hello from {}:{}", this.applicationName, this.applicationVersion);
         }
 
         this.runDemos(this.applicationContext.getBean(Config.class));

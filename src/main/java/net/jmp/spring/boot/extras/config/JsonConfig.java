@@ -37,10 +37,10 @@ import static net.jmp.util.logging.LoggerUtils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import org.springframework.core.env.Environment;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -54,16 +54,13 @@ public class JsonConfig {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
-    /// The environment.
-    private final Environment environment;
+    /// The application configuration file name.
+    @Value("${app.config.json.filename}")
+    private String appConfigFileName;
 
     /// The default constructor.
-    ///
-    /// @param  environment org.springframework.core.env.Environment
-    public JsonConfig(final Environment environment) {
+    public JsonConfig() {
         super();
-
-        this.environment = environment;
     }
 
     /// Return the configuration.
@@ -75,15 +72,13 @@ public class JsonConfig {
             this.logger.trace(entry());
         }
 
-        final String appConfigFileName = this.environment.getProperty("app.config.json.filename");
-
         if (appConfigFileName == null) {
             throw new RuntimeException("The app.config.json.filename property is not set");
         }
 
-        this.logger.info("Reading JSON config file: {}", appConfigFileName);
+        this.logger.info("Reading JSON config file: {}", this.appConfigFileName);
 
-        final Resource resource = new ClassPathResource(appConfigFileName);
+        final Resource resource = new ClassPathResource(this.appConfigFileName);
 
         Config config;
 
@@ -94,15 +89,14 @@ public class JsonConfig {
 
             config = gson.fromJson(reader, Config.class);
         } catch (final IOException ioe) {
-            throw new RuntimeException("Failed to read JSON config file: " + appConfigFileName, ioe);
+            throw new RuntimeException("Failed to read JSON config file: " + this.appConfigFileName, ioe);
         }
 
-        this.logger.info("Loaded JSON config file: {}", appConfigFileName);
+        this.logger.info("Loaded JSON config file: {}", this.appConfigFileName);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exitWith(config));
         }
-
 
         return config;
     }
