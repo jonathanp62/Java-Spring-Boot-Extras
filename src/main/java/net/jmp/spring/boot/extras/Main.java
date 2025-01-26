@@ -67,6 +67,14 @@ public class Main implements Runnable {
     @Value("${spring.application.version}")
     private String applicationVersion;
 
+    /// The current working directory name from the system environment. Not set by Gradle.
+    @Value("${pwd}")
+    private String workingDirectoryName;
+
+    /// The Gradle version. Set by the Gradle build process.
+    @Value("${gradle.version}")
+    private String gradleVersion;
+
     /// The constructor.
     ///
     /// @param  applicationContext  org.springframework.context.ApplicationContext
@@ -83,9 +91,9 @@ public class Main implements Runnable {
             this.logger.trace(entry());
         }
 
-        if (this.logger.isInfoEnabled()) {
-            this.logger.info("Hello from {}:{}", this.applicationName, this.applicationVersion);
-        }
+        this.logger.info("Hello from {}:{}", this.applicationName, this.applicationVersion);
+        this.logger.info("Directory: {}", this.workingDirectoryName);
+        this.logger.info("Gradle:    {}", this.gradleVersion);
 
         this.runDemos(this.applicationContext.getBean(Config.class));
 

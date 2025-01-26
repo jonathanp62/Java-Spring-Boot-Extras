@@ -47,6 +47,7 @@ description = 'Spring-Boot-Extras'
 println "The groupId is ${project.group}"
 println "The artifactId is ${project.name}" // Set in settings.gradle
 println "The version is ${project.version}"
+println "The Gradle version is ${gradle.gradleVersion}"
 
 java.sourceCompatibility = JavaVersion.VERSION_23
 
@@ -86,6 +87,13 @@ tasks.named('test') {
 	testLogging {
 		events "passed", "skipped", "failed"
 	}
+}
+
+bootRun {
+	mainClass = 'net.jmp.spring.boot.extras.BootstrapSpring'
+	jvmArgs = [ '-Xmx1g' ]
+
+	environment("GRADLE_VERSION", "${gradle.gradleVersion}")
 }
 
 tasks.register("bootRunDev") {

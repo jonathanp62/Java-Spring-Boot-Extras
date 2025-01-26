@@ -58,7 +58,7 @@ public class MainCommandLineRunner implements CommandLineRunner {
     /// A constructor.
     ///
     /// @param  context org.springframework.context.ApplicationContext
-    MainCommandLineRunner(final ApplicationContext context) {
+    public MainCommandLineRunner(final ApplicationContext context) {
         super();
 
         this.context = context;
